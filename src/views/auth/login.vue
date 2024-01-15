@@ -72,7 +72,7 @@ export default {
  },
  methods: {
   login(){
-    this.$store.dispatch("login")
+    this.$store.dispatch("login", this.email)
     .then(() => this.$router.push('/'))
     
   }

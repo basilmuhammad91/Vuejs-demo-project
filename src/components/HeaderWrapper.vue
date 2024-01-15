@@ -17,9 +17,9 @@
         <span class="ml-3 text-xl">Vue Project</span>
       </a>
       <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
-        <router-link to="/" class="mr-5 hover:text-gray-900">Home</router-link>
-        <router-link to="/profile" class="mr-5 hover:text-gray-900">User Profile</router-link>
-        <router-link to="/items" class="mr-5 hover:text-gray-900">Items</router-link>
+        <router-link to="/" :class="{ 'text-active': $route.path === '/' }" class="mr-5 hover:text-gray-900">Home</router-link>
+        <router-link to="/profile" :class="{ 'text-active': $route.path === '/profile' }" class="mr-5 hover:text-gray-900">User Profile</router-link>
+        <router-link to="/items" :class="{ 'text-active': $route.path === '/items' }" class="mr-5 hover:text-gray-900">Items</router-link>
       </nav>
       <button
       @click="logOut"

@@ -14,9 +14,9 @@ const store = createStore({
       state.items = payload
     },
     // Mutation to set a mock user for authentication
-    setUser(state) {
+    setUser(state, payload) {
       state.authUser = {
-        name: 'John Doe',
+        name: payload,
         address: 'Chatakpur-3, Dhangadhi Kailali',
         phone: '+977 9955221114',
         email: 'john@example.com',
@@ -41,8 +41,8 @@ const store = createStore({
           console.log(error)
         })
     },
-    login({commit}){
-      commit("setUser")
+    login({commit}, payload){
+      commit("setUser", payload)
     },
     logOut({ commit }) {
       commit('logOut')
