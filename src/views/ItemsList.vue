@@ -25,18 +25,40 @@
                     <th scope="col" class="px-6 py-4">User Id</th>
                     <th scope="col" class="px-6 py-4">Title</th>
                     <th scope="col" class="px-6 py-4">Completed</th>
+                    <th scope="col" class="px-6 py-4">Actions</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700" v-for="item, index in items" :key="index">
-                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ index+1 }}</td>
+                <tbody v-if="isLoaded">
+                  <tr
+                  v-bind:class="{
+                    'border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700': true,
+                    'bg-green-200 dark:bg-green-700': item.completed
+                  }"
+                    class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700"
+                    v-for="(item, index) in items"
+                    :key="index"
+                  >
+                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ index + 1 }}</td>
                     <td class="whitespace-nowrap px-6 py-4">{{ item.userId }}</td>
                     <td class="whitespace-nowrap px-6 py-4">{{ item.title }}</td>
-                    <td class="whitespace-nowrap px-6 py-4">{{ item.completed ? "Yes" : "No" }}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{{ item.completed ? 'Yes' : 'No' }}</td>
+                    <td>
+                      <input type="checkbox" id="checkbox" v-model="item.completed" />
+                    </td>
                   </tr>
                 </tbody>
               </table>
-            </div> 
+              <div
+                v-if="!isLoaded"
+                class="loader inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                role="status"
+              >
+                <span
+                  class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                  >Loading...</span
+                >
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -47,28 +69,40 @@
 <script>
 import HeaderWrapper from '../components/HeaderWrapper.vue'
 export default {
-  data(){
+  data() {
     return {
       isChecked: false,
-    };
+      isLoaded: false
+    }
   },
   mounted() {
-    this.$store.dispatch('fetchItems')
+    this.$store
+      .dispatch('fetchItems')
+      .then(() => {
+        this.isLoaded = true
+      })
+      .catch(() => {
+        this.isLoaded = true
+      })
   },
   components: {
     HeaderWrapper
   },
   methods: {
-    handleCheckboxChange (){
+    changeStatus(status)
+    {
+      console.log('status...', status)
+    },
+    handleCheckboxChange() {
       this.isChecked = !this.isChecked
     }
   },
   computed: {
-    items(){
+    items() {
       let items = this.$store.state.items
-      if(this.isChecked){
-        return items.filter(i => i.completed == true)
-      } 
+      if (this.isChecked) {
+        return items.filter((i) => i.completed == true)
+      }
       return items
     }
   }

@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import createPersistedState from 'vuex-persistedstate';
 import axios from 'axios'
 const store = createStore({
   state: {
@@ -43,7 +44,12 @@ const store = createStore({
   },
   getters: {
     isAuthenticated: state => !!state.authUser,
-  }
+  },
+  plugins: [
+    createPersistedState({
+      // Configuration options here (if needed)...
+    }),
+  ],
 })
 
 export default store
